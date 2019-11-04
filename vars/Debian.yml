@@ -1,0 +1,4 @@
+---
+__monitoring_plugins_packages:
+  - monitoring-plugins-standard
+  - libmonitoring-plugin-perl

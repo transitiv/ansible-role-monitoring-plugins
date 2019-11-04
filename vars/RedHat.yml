@@ -1,0 +1,4 @@
+---
+__monitoring_plugins_packages:
+  - perl-Monitoring-Plugin
+  - nagios-plugins-all

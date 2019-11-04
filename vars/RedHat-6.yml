@@ -1,0 +1,5 @@
+---
+__monitoring_plugins_packages:
+  - perl-Monitoring-Plugin
+  - perl-Class-Accessor
+  - nagios-plugins-all

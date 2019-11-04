@@ -1,0 +1,74 @@
+---
+- name: Include OS specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}-{{ ansible_distribution_version.split('.')[0] }}.yml"
+    - "{{ ansible_os_family }}.yml"
+
+- name: Define monitoring_plugins_packages
+  set_fact:
+    monitoring_plugins_packages: "{{ __monitoring_plugins_packages }}"
+  when: monitoring_plugins_packages is not defined
+
+- name: Install monitoring-plugins on Debian based systems
+  apt:
+    name: "{{ monitoring_plugins_packages|flatten }}"
+    state: present
+    install_recommends: "{{ monitoring_plugins_install_recommends|d()|bool }}"
+    update_cache: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install monitoring-plugins on RedHat based systems
+  yum:
+    name: "{{ monitoring_plugins_packages|flatten }}"
+    state: present
+    update_cache: true
+  when: ansible_os_family == 'RedHat'
+
+- name: Install monitoring plugins configuration file
+  template:
+    src: monitoring-plugins.ini.j2
+    dest: "{{ monitoring_plugins_config_file }}"
+    owner: "{{ monitoring_plugins_config_user|d(omit, true) }}"
+    group: "{{ monitoring_plugins_config_group|d(omit, true) }}"
+    mode: "{{ monitoring_plugins_config_mode }}"
+
+- name: Create custom plugin directory
+  file:
+    path: "{{ monitoring_plugins_custom_directory }}"
+    state: directory
+    owner: "{{ monitoring_plugins_custom_directory_owner|d(omit, true) }}"
+    group: "{{ monitoring_plugins_custom_directory_group|d(omit, true) }}"
+    mode: "{{ monitoring_plugins_custom_directory_mode }}"
+  when: monitoring_plugins_custom_directory|d()
+
+- name: Install custom monitoring plugins (simple)
+  copy:
+    src: "{{ monitoring_plugins_custom_plugins_source_directory }}/{{ item }}"
+    dest: "{{ monitoring_plugins_custom_directory }}/{{ item|basename }}"
+    owner: "{{ monitoring_plugins_custom_plugins_owner|d(omit, true) }}"
+    group: "{{ monitoring_plugins_custom_plugins_group|d(omit, true) }}"
+    mode: " {{ monitoring_plugins_custom_plugins_mode }}"
+  with_flattened:
+    - "{{ monitoring_plugins_custom_plugins }}"
+    - "{{ monitoring_plugins_group_custom_plugins }}"
+    - "{{ monitoring_plugins_host_custom_plugins }}"
+  when:
+    - monitoring_plugins_custom_directory|d()
+    - item is not mapping
+
+- name: Install custom monitoring plugins (advanced)
+  copy:
+    src: "{{ monitoring_plugins_custom_plugins_source_directory }}/{{ item.file }}"
+    dest: "{{ monitoring_plugins_custom_directory }}/{{ item.name|d(item.file|basename) }}"
+    mode: "{{ item.mode|d(monitoring_plugins_custom_plugins_mode) }}"
+    owner: "{{ item.user|d(omit) }}"
+    group: "{{ item.group|d(omit) }}"
+  with_flattened:
+    - "{{ monitoring_plugins_custom_plugins }}"
+    - "{{ monitoring_plugins_group_custom_plugins }}"
+    - "{{ monitoring_plugins_host_custom_plugins }}"
+  when:
+    - monitoring_plugins_custom_directory|d()
+    - item is mapping
+    - item.file|d()

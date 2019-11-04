@@ -1,0 +1,77 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  roles:
+    - role: transitiv.monitoring-plugins
+
+  vars:
+    monitoring_plugins_custom_directory: /usr/local/lib/monitoring-plugins
+    monitoring_plugins_custom_plugins:
+      - test-plugin.pl
+      - file: test-plugin.pl
+        name: test-plugin2.pl
+        user: nobody
+        mode: '0750'
+    monitoring_plugins_config_mode: '0640'
+    monitoring_plugins_config:
+      test-plugin:
+        option1: value1
+        option2: value2
+      test-plugin2:
+        option4: value4
+        option3: value3
+    monitoring_plugins_host_config:
+      test-plugin:
+        option1: hostvalue1
+      test-plugin2:
+        option5: value5
+      test-plugin3:
+        option6: value6
+
+  pre_tasks:
+    - name: Enable PowerTools repo on CentOS 8
+      replace:
+        path: /etc/yum.repos.d/CentOS-PowerTools.repo
+        regexp: '^enabled=0$'
+        replace: enabled=1
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution_version.split('.')[0] == '8'
+
+  post_tasks:
+    - name: Ensure simple test plugin is installed
+      stat:
+        path: "{{ monitoring_plugins_custom_directory }}/test-plugin.pl"
+      register: result
+      changed_when: false
+      failed_when: result.stat.isreg is not defined or not result.stat.isreg
+
+    - name: Ensure advanced test plugin is installed
+      stat:
+        path: "{{ monitoring_plugins_custom_directory }}/test-plugin2.pl"
+      register: result
+      changed_when: false
+      failed_when: result.stat.isreg is not defined or not result.stat.isreg or
+                    result.stat.pw_name != 'nobody' or result.stat.mode != '0750'
+
+    - name: Ensure test plugin executes successfully
+      command: "{{ monitoring_plugins_custom_directory }}/test-plugin.pl"
+      changed_when: false
+
+    - name: Ensure INI file is installed
+      stat:
+        path: /etc/monitoring-plugins.ini
+      register: result
+      changed_when: false
+      failed_when: result.stat.isreg is not defined or not result.stat.isreg or
+                    result.stat.mode != monitoring_plugins_config_mode
+
+    - name: Ensure content of INI file is correct
+      copy:
+        path: files/monitoring-plugins.ini
+        dest: /etc/monitoring-plugins.ini
+      register: result
+      changed_when: false
+      failed_when: result.changed

@@ -1,0 +1,33 @@
+---
+galaxy_info:
+  role_name: monitoring-plugins
+  author: Adam James (atj)
+  description: Installs packaged and custom monitoring plugins on RHEL/CentOS and Debian/Ubuntu systems.
+  company: Transitiv Technologies Ltd.
+  issue_tracker_url: https://github.com/transitiv/ansible-role-monitoring-plugins/issues
+  travis_status_url: https://travis-ci.com/transitiv/ansible-role-monitoring-plugins.svg?branch=master
+  license: MIT
+  min_ansible_version: 2.4
+  platforms:
+    - name: EL
+      versions:
+        - 8
+        - 7
+        - 6
+    - name: Ubuntu
+      versions:
+        - xenial
+        - bionic
+    - name: Debian
+      versions:
+        - jessie
+        - stretch
+        - buster
+  galaxy_tags:
+    - monitoring
+    - icinga
+    - icinga2
+    - nagios
+    - naemon
+
+dependencies: []
