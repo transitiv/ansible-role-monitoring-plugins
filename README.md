@@ -14,7 +14,7 @@ included.
 ```yaml
 - hosts: monitored_servers
   roles:
-    - role: transitiv.monitoring-plugins
+    - role: transitiv.monitoring_plugins
       become: yes
 ```
 

@@ -22,5 +22,5 @@ script:
 # rename project directory to match Galaxy role name
 before_script:
   - cd ../
-  - mv ansible-role-monitoring-plugins transitiv.monitoring-plugins
-  - cd transitiv.monitoring-plugins
+  - mv ansible-role-monitoring-plugins transitiv.monitorin_plugins
+  - cd transitiv.monitoring_plugins
