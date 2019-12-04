@@ -4,7 +4,7 @@
   become: true
 
   roles:
-    - role: transitiv.monitoring-plugins
+    - role: transitiv.monitoring_plugins
 
   vars:
     monitoring_plugins_custom_directory: /usr/local/lib/monitoring-plugins
