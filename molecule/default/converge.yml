@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+
+  tasks:
+    - name: "Include common variables"
+      include_vars: vars.yml
+
+    - name: "Include transitiv.monitoring_plugins"
+      include_role:
+        name: "transitiv.monitoring_plugins"

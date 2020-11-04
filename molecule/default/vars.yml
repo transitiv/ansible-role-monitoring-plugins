@@ -1,0 +1,23 @@
+---
+monitoring_plugins_custom_directory: /usr/local/lib/monitoring-plugins
+monitoring_plugins_custom_plugins:
+  - test-plugin.pl
+  - file: test-plugin.pl
+    name: test-plugin2.pl
+    user: nobody
+    mode: '0750'
+monitoring_plugins_config_mode: '0640'
+monitoring_plugins_config:
+  test-plugin:
+    option1: value1
+    option2: value2
+  test-plugin2:
+    option4: value4
+    option3: value3
+monitoring_plugins_host_config:
+  test-plugin:
+    option1: hostvalue1
+  test-plugin2:
+    option5: value5
+  test-plugin3:
+    option6: value6
