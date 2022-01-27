@@ -1,6 +1,7 @@
 ---
 galaxy_info:
   role_name: monitoring_plugins
+  namespace: transitiv
   author: Adam James (atj)
   description: Installs packaged and custom monitoring plugins on RHEL/CentOS and Debian/Ubuntu systems.
   company: Transitiv Technologies Ltd.
