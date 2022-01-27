@@ -1,4 +1,0 @@
----
-__monitoring_plugins_packages:
-  - monitoring-plugins-standard
-  - libnagios-plugin-perl
