@@ -39,19 +39,10 @@ monitoring_plugins_install_recommends: true
 (Debian/Ubuntu) Defines whether apt installs recommended packages.
 
 ```yaml
-# Debian 8 (Jessie)
-monitoring_plugins_packages:
-  - monitoring-plugins-standard
-  - libnagios-plugin-perl
 # Debian / Ubuntu
 monitoring_plugins_packages:
   - monitoring-plugins-standard
   - libmonitoring-plugin-perl
-# CentOS / RHEL 6
-monitoring_plugins_packages:
-  - perl-Monitoring-Plugin
-  - perl-Class-Accessor
-  - nagios-plugins-all
 # CentOS / RHEL
 monitoring_plugins_packages:
   - perl-Monitoring-Plugin
