@@ -1,6 +1,6 @@
 # Ansible Role: Monitoring Plugins
 
-[![Build Status](https://travis-ci.com/transitiv/ansible-role-monitoring-plugins.svg?branch=master)](https://travis-ci.com/transitiv/ansible-role-monitoring-plugins)
+[![CI](https://github.com/transitiv/ansible-role-monitoring-plugins/workflows/CI/badge.svg?event=push)](https://github.com/transitiv/ansible-role-monitoring-plugins/actions?query=workflow%3ACI)
 
 This role installs packaged and custom monitoring plugins on RHEL/CentOS and
 Debian/Ubuntu systems.
