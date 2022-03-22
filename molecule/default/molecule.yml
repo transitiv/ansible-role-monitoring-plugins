@@ -13,5 +13,11 @@ platforms:
     pre_build_image: true
 provisioner:
   name: ansible
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
+  inventory:
+    links:
+      group_vars: inventory/group_vars/
+      host_vars: inventory/host_vars/
 verifier:
   name: ansible

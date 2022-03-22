@@ -2,9 +2,6 @@
 - name: Verify
   hosts: all
   tasks:
-    - name: "Include common variables"
-      include_vars: vars.yml
-
     - name: Ensure simple test plugin is installed
       stat:
         path: "{{ monitoring_plugins_custom_directory }}/test-plugin.pl"
@@ -32,11 +29,11 @@
       failed_when: result.stat.isreg is not defined or not result.stat.isreg or
                     result.stat.mode != monitoring_plugins_config_mode
 
-    - name: Ensure content of INI file is correct
+    - name: Ensure contents and mode of INI file are correct
       copy:
         path: files/monitoring-plugins.ini
         dest: /etc/monitoring-plugins.ini
-        mode:  '0640'
+        mode: 0640
       register: result
-      changed_when: false
+      check_mode: true
       failed_when: result.changed
