@@ -43,7 +43,7 @@ monitoring_plugins_install_recommends: true
 monitoring_plugins_packages:
   - monitoring-plugins-standard
   - libmonitoring-plugin-perl
-# CentOS / RHEL
+# CentOS / RHEL
 monitoring_plugins_packages:
   - perl-Monitoring-Plugin
   - nagios-plugins-all
